@@ -33,7 +33,7 @@ class Bird:
         self.height = self.y
         self.time = 0
         self.image_count = 0
-        self.image = IMGS[0]
+        self.image = self.IMGS[0]
 
     def pular(self):
         self.speed = -10.5
@@ -61,12 +61,60 @@ class Bird:
             if self.angle > -90:
                 self.angle -= self.ROTATION_SPEED
     
-    # PROJECT CHECKPOINT
+    def draw(self, screen):
+    # define image that will use
+        self.image_count += 1
+
+        if self.image_count < self.ANIMATION_TIME:
+            self.image = self.IMGS[0]
+        elif self.image_count < self.ANIMATION_TIME*2:
+            self.image = self.IMGS[1]
+        elif self.image_count < self.ANIMATION_TIME*3:
+            self.image = self.IMGS[2]
+        elif self.image_count < self.ANIMATION_TIME*4:
+            self.image = self.IMGS[1]
+        elif self.image_count >= self.ANIMATION_TIME*4 + 1:
+            self.image = self.IMGS[0]
+            self.image_count = 0 
+
+    # if bird is falling, it won't flap its wings 
+        if self.angle <= -80:
+            self.image = self.IMGS[1]
+            self.image_count = self.ANIMATION_TIME*2
+
+    # draw the image
+        image_rotation = pygame.transform.rotate(self.image, self.angle)
+        image_position_center = self.image.get_rect(topleft=(self.x, self.y )).center
+        rectangle = image_rotation.get_rect(center=image_position_center)
+        screen.blit(image_rotation, rectangle.topleft)
+
+    def get_mask(self):
+        pygame.mask.from_surface(self.image)
 
 
 class Pipe:
-    pass
+    DISTANCE = 200
+    SPEED = 5
 
+    def __init__(self, x):
+        self.x = x
+        self.height = 0
+        self.position_top = 0
+        self.position_bottom = 0
+        self.PIPE_TOP = pygame.transform.flip(IMAGE_PIPE, False, True)
+        self.PIPE_BOTTOM = IMAGE_PIPE
+        self.pass = False
+        self.set_height()
+
+    def set_height(self):
+        self.altura = random.randrange(50, 450)
+        self.position_top = self.height - self.PIPE_TOP.get_height()
+        self.position_bottom = self.height + self.DISTANCE
+
+    def move(self):
+        pass # checkpoint
+
+        
 
 class Floor:
     pass
