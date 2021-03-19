@@ -112,9 +112,52 @@ class Pipe:
         self.position_bottom = self.height + self.DISTANCE
 
     def move(self):
-        pass # checkpoint
+        self.x -= self.SPEED
+
+    def draw(self, screen):
+        screen.blit(self.PIPE_TOP, (self.x, self.position_top))
+        screen.blit(self.PIPE_BOTTOM, (self.x, self.position_bottom))
+
+    def collision(self, bird):
+        bird_mask = bird.get_mask()
+        top_mask = pygame.mask.from_surface(self.PIPE_TOP)
+        base_mask = pygame.mask.from_surface(self.PIPE_BOTTOM)
+
+        distance_top = (self.x - bird.x, self.position_top - round(bird.y))
+        distance_bottom = (self.x - bird.x, self.position_bottom - round(bird.y))
+
+        top_point = bird_mask.overlap(top_mask, distance_top)
+        base_point = bird_mask.overlap(base_mask, distance_bottom)
+
+        if top_point or base_point:
+            return True
+        else:
+            return False
 
         
-
 class Floor:
+    SPEED = 5
+    WIDTH = IMAGE_FLOOR.get_width()
+    IMAGE = IMAGE_FLOOR
+
+    def __init__(self, y):
+        self.y = y
+        self.x1 = 0
+        self.x2 = self.WIDTH
+
+    def move(self):
+        self.x1 -= self.SPEED
+        self.x2 -= self.SPEED
+
+        if self.x1 + self.WIDTH < 0:
+            self.x1 = self.x1 + self.WIDTH
+        if self.x2 + self.WIDTH < 0:
+            self.x2 = self.x2 + self.WIDTH
+
+    def draw(self, screen):
+        screen.blit(self.IMAGE, (self.x1, self.y))
+        screen.blit(self.IMAGE, (self.x2, self.y))
+
+
+def draw_screen(screen, birds, pipes, floor, score):
     pass
