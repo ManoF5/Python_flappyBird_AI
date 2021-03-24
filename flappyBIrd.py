@@ -160,4 +160,21 @@ class Floor:
 
 
 def draw_screen(screen, birds, pipes, floor, score):
-    pass
+    screen.blit(IMAGE_BACKGROUND, (0, 0))
+    for bird in birds:
+        bird.draw(screen)
+    for pipe in pipes:
+        pipe.draw(screen)
+    
+    text = SCORE.render(f"Score: {score}", 1, (255, 255, 255))
+    screen.blit(text, (SCREEN_WIDTH - 10 - text.get_width(), 10))
+    floor.draw(screen)
+    pygame.display.update()
+
+def main():
+    birds = [Bird(230, 350)]
+    floor = Floor(730)
+    pipes = [Pipe(700)]
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    score = 0
+    
