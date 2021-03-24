@@ -103,7 +103,7 @@ class Pipe:
         self.position_bottom = 0
         self.PIPE_TOP = pygame.transform.flip(IMAGE_PIPE, False, True)
         self.PIPE_BOTTOM = IMAGE_PIPE
-        self.pass = False
+        self.passed = False
         self.set_height()
 
     def set_height(self):
